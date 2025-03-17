@@ -11,7 +11,7 @@ load_dotenv()
 class TestSearxSearch(unittest.TestCase):
 
     def setUp(self):
-        os.environ['SEARXNG_BASE_URL'] = "http://searx.lan"  # Set the environment variable
+        os.environ['SEARXNG_BASE_URL'] = "http://127.0.0.1:8080"  # Set the environment variable
         self.base_url = os.getenv("SEARXNG_BASE_URL")
         self.search_tool = searxSearch(base_url=self.base_url)
         self.valid_query = "test query"

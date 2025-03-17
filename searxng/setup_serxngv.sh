@@ -114,5 +114,3 @@ docker ps -a --filter "name=searxng" --filter "name=redis"
 echo "Access SearXNG at: http://localhost:8080"
 echo "To view logs: docker compose logs -f"
 echo "To stop: docker compose down"
-
-export SEARXNG_BASE_URL="http://0.0.0.0:8081/"

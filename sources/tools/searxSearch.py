@@ -1,7 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 import os
-from sources.tools.tools import Tools  # Import the Tools class
+
+if __name__ == "__main__":
+    from tools import Tools  # Import the Tools class
+else:
+    from sources.tools.tools import Tools  # Import the Tools class
 
 class searxSearch(Tools):
     def __init__(self, base_url: str = None):
@@ -11,6 +15,7 @@ class searxSearch(Tools):
         super().__init__()
         self.tag = "web_search"
         self.base_url = base_url or os.getenv("SEARXNG_BASE_URL")  # Requires a SearxNG base URL
+        print("url:", self.base_url)
         self.user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
         if not self.base_url:
             raise ValueError("SearxNG base URL must be provided either as an argument or via the SEARXNG_BASE_URL environment variable.")
@@ -58,3 +63,8 @@ class searxSearch(Tools):
         Checks if the execution failed based on the output.
         """
         return "Error" in output
+
+if __name__ == "__main__":
+    search_tool = searxSearch(base_url="http://127.0.0.1:8080")
+    result = search_tool.execute(["are dog better than cat?"])
+    print(result)
