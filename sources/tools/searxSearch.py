@@ -9,13 +9,13 @@ class searxSearch(Tools):
         A tool for searching a SearxNG instance and extracting URLs and titles.
         """
         super().__init__()
-        self.tag = "searx_search"
+        self.tag = "web_search"
         self.base_url = base_url or os.getenv("SEARXNG_BASE_URL")  # Requires a SearxNG base URL
         self.user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
         if not self.base_url:
             raise ValueError("SearxNG base URL must be provided either as an argument or via the SEARXNG_BASE_URL environment variable.")
 
-    def execute(self, blocks: list, safety: bool = True) -> str:
+    def execute(self, blocks: list, safety: bool = False) -> str:
         """Executes a search query against a SearxNG instance using POST and extracts URLs and titles."""
         if not blocks:
             return "Error: No search query provided."
@@ -48,10 +48,10 @@ class searxSearch(Tools):
                     url = url_header['href']
                     title = article.find('h3').text.strip() if article.find('h3') else "No Title"
                     description = article.find('p', class_='content').text.strip() if article.find('p', class_='content') else "No Description"
-                    results.append(f"{title} | {url} | {description}")
-            return "\n".join(results)  # Return results as a single string, separated by newlines
+                    results.append(f"Title:{title}\nSnippet:{description}\nLink:{url}")
+            return "\n\n".join(results)  # Return results as a single string, separated by newlines
         except requests.exceptions.RequestException as e:
-            return f"Error during search: {e}"
+            return f"Error during search: {str(e)}"
 
     def execution_failure_check(self, output: str) -> bool:
         """
